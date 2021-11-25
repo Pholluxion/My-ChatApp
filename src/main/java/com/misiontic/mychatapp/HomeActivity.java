@@ -5,21 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -51,12 +59,24 @@ public class HomeActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                messages.clear();
+
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+
                     String message = dataSnapshot.getValue(String.class);
                     String user = dataSnapshot.getKey();
                     Message message1 = new  Message(user,message);
-                    messages.add(message1);
+
+
+
+                    if(!messages.contains(message1)){
+                        messages.add(message1);
+                    }
                 }
+
+                Collections.reverse(messages);
+
                 myAdapter.notifyDataSetChanged();
             }
 
@@ -71,11 +91,35 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 basicReadWrite(message.getText().toString());
+                message.setText("");
+
             }
         });
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+
+            case  R.id.logOut:
+                signOut();
+                return true;
+
+
+            default:
+                return false;
+        }
     }
 
     public void basicReadWrite(String m) {
@@ -87,8 +131,10 @@ public class HomeActivity extends AppCompatActivity {
         }
         // [START write_message]
         // Write a message to the database
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("messages").child(this.email);
+        DatabaseReference myRef = database.getReference("messages").child(this.email + "  " + getDateTime().toString());
 
         myRef.setValue(m);
         // [END write_message]
@@ -112,4 +158,20 @@ public class HomeActivity extends AppCompatActivity {
         });
         // [END read_message]
     }
+
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public void signOut() {
+        // [START auth_sign_out]
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+        // [END auth_sign_out]
+    }
+
 }
