@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1092417631373",
+    "project_id": "my-chat-app-4b44f",
+    "storage_bucket": "my-chat-app-4b44f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092417631373:android:60be688486e3f50b0adec4",
+        "android_client_info": {
+          "package_name": "com.misiontic.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092417631373-fgg2speqkcd25gvncf7tqfjlc4sln3c8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.misiontic.mychatapp",
+            "certificate_hash": "82ec019b659e24ba2b0c7f7894bd54dc8947d80b"
+          }
+        },
+        {
+          "client_id": "1092417631373-6n699ejkfnookufbpldo661t648jo0ts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY312_yr4iXkolRVIaJG1LFTC-weJyacQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092417631373-6n699ejkfnookufbpldo661t648jo0ts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
